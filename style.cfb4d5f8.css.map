@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.css"],"names":[],"mappings":"AAAA,UAEI,QAAS,CACT,eACJ,CAEA,SACI,gBACJ","file":"style.cfb4d5f8.css","sourceRoot":"..","sourcesContent":["html,\r\nbody {\r\n    margin: 0;\r\n    overflow: hidden;\r\n}\r\n\r\nsvg text {\r\n    user-select: none;\r\n}\r\n"]}
