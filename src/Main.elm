@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Browser exposing (Document)
 import Browser.Events
-import Color exposing (Color)
+import Color
 import Dict exposing (Dict)
 import Html exposing (Html)
 import Json.Decode as Dec exposing (Decoder)
@@ -78,13 +78,14 @@ type alias Toolbar =
 
 
 type alias SplitterId =
-    { areaId : DockingAreaId, index : Int }
+    { areaId : DockingAreaId
+    , index : Int
+    }
 
 
 type HoverStatus a
     = NotHovered
     | Hovered a
-    | Clicked a
 
 
 type alias PaneDict =
@@ -97,18 +98,12 @@ type alias Pane =
     , size : Size
     , title : String
     , status : PaneStatus
-    , content : PaneContent
     }
 
 
 type PaneStatus
     = Docked DockingAreaId
     | Floating
-
-
-type alias PaneContent =
-    { backgroundColor : String
-    }
 
 
 type alias DockingAreaDict =
@@ -178,7 +173,6 @@ type Msg
     = BrowserResize Size
     | MouseMove Pos
     | MouseUp Pos
-    | DoNothing
     | ToolbarHoverEvent ToolbarHoverEvent
     | AddNewPane
     | SplitterHoverEvent SplitterHoverEvent
@@ -549,7 +543,7 @@ update msg model =
 
                 insertAt : Int -> DockingItem -> List DockingItem -> List DockingItem
                 insertAt idx item list =
-                    List.Extra.splitAt idx list |> (\( lower, upper ) -> lower ++ [ item ] ++ upper)
+                    List.Extra.splitAt idx list |> (\( lower, upper ) -> lower ++ (item :: upper))
             in
             case ( getAt (index - 1), getAt index ) of
                 ( Nothing, Nothing ) ->
@@ -740,9 +734,6 @@ update msg model =
 
         MouseUp _ ->
             withCmdNone { model | draggingStatus = NotDragging }
-
-        DoNothing ->
-            withCmdNone model
 
         ToolbarHoverEvent event ->
             withCmdNone { model | toolbar = updateToolbarMouseEvent event model.toolbar }
@@ -1080,13 +1071,6 @@ toolbarSvg model tools =
                     else
                         backgroundColor
 
-                Clicked targetId ->
-                    if id == targetId then
-                        hslString 240 0 100
-
-                    else
-                        backgroundColor
-
         buttonSvg : Float -> Tool -> Svg Msg
         buttonSvg x { icon, id, msg } =
             Svg.g
@@ -1179,7 +1163,7 @@ paneSvg model pane =
             Svg.rect
                 (posAttr pane.pos <|
                     sizeAttr pane.size <|
-                        [ Attr.fill pane.content.backgroundColor
+                        [ Attr.fill "white"
                         , Attr.stroke titleBackgroundColor
                         , Attr.strokeWidth (fStr frameWidth)
                         , svgMousedown (PaneBodyMouseDown pane.id)
@@ -1597,15 +1581,21 @@ fStrConcat2 v1 v2 =
 
 
 type alias Pos =
-    { x : Float, y : Float }
+    { x : Float
+    , y : Float
+    }
 
 
 type alias Size =
-    { width : Float, height : Float }
+    { width : Float
+    , height : Float
+    }
 
 
 type alias Offset =
-    { offsetX : Float, offsetY : Float }
+    { offsetX : Float
+    , offsetY : Float
+    }
 
 
 addPos : Pos -> Offset -> Pos
