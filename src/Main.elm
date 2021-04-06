@@ -695,7 +695,6 @@ update msg model =
             , pos = { x = 0, y = 0 }
             , size = { width = 50, height = 50 }
             , status = Docked model.dockingRoot
-            , content = { backgroundColor = hslString 0 0 100 }
             }
 
         -- 指定した id の DockingArea の先頭にペインを追加する
