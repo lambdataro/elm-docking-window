@@ -18,18 +18,14 @@ type alias Flags =
 
 type alias Model =
     { winSize : Size Float
-    , mouseDownPos : Pos Float
     , mousePos : Pos Float
-    , mouseUpPos : Pos Float
     }
 
 
 init : Flags -> Model
 init { winWidth, winHeight } =
     { winSize = { width = winWidth, height = winHeight }
-    , mouseDownPos = zeroPos
     , mousePos = zeroPos
-    , mouseUpPos = zeroPos
     }
 
 
@@ -79,11 +75,11 @@ update msg model =
         BrowserResize winSize ->
             { model | winSize = winSize }
 
-        MouseDown mouseDownPos ->
-            { model | mouseDownPos = mouseDownPos }
+        MouseDown _ ->
+            model
 
         MouseMove mousePos ->
             { model | mousePos = mousePos }
 
-        MouseUp mouseUpPos ->
-            { model | mouseUpPos = mouseUpPos }
+        MouseUp _ ->
+            model

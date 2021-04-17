@@ -1,4 +1,4 @@
-module Common.Size exposing (HasSize, Size, zeroSize)
+module Common.Size exposing (HasSize, Size, updateSize, zeroSize)
 
 
 type alias HasSize number a =
@@ -16,4 +16,12 @@ zeroSize : Size number
 zeroSize =
     { width = 0
     , height = 0
+    }
+
+
+updateSize : HasSize number a -> HasSize number b -> HasSize number b
+updateSize { width, height } record =
+    { record
+        | width = width
+        , height = height
     }
